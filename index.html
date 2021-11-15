@@ -13,7 +13,7 @@
         <link rel="stylesheet" href="bootstrap.min.css">
     </head>
     <body>
-        <Audio id="ding2" src="file://ding2.mp3"></Audio>
+        <!-- <Audio id="ding2" src="file://ding2.mp3"></Audio> -->
         <script>
             //document.getElementById("ding2").play();
             /*function sleep (time) {
@@ -37,12 +37,6 @@
             <input type="checkbox" id="ding2" data="ding2.mp3" name="ding2"> ding2
         </label> -->
 
-        <div id="sounds" class="form-check">
-            <table id="sounds-table">
-
-            </table>
-        </div>
-
         <script>
             var sounds = {
                 "ding2": { file: "sounds/ding2.mp3", mdelay: 60 },
@@ -50,6 +44,54 @@
                 "scream7": { file: "sounds/scream7.mp3", mdelay: 60},
                 "hammer1": { file: "sounds/hammer1.mp3", mdelay: 60}
             }
+        </script>
+
+        <script>
+            window.muteSounds = false;
+            function shutdown() {
+                console.log("in shutdown");
+                for (var sound in sounds) {
+                    console.log(sound);
+                    jQuery("#" + sound).prop("checked", false);
+                }
+            }
+
+            function mute() {
+                if (window.muteSounds == false) {
+                    window.muteSounds = true;
+                    jQuery("#mute").prop("value", "Unmute");
+                } else {
+                    window.muteSounds = false;
+                    jQuery("#mute").prop("value", "Mute");
+                }
+            }
+
+            function chaos() {
+                if (confirm("Are you sure?")) {
+                    for (var sound in sounds) {
+                        jQuery("#" + sound).prop("checked", true);
+                        jQuery("#" + sound + "-mdelay").prop("value", parseInt(Math.random() * 30));
+                    }
+                }
+            }
+        </script>
+
+        <div id="controls">
+            <input type="button" onclick="shutdown()" class="btn btn-primary btn-sm" id="shutdown" value="Shutdown">
+            <input type="button" onclick="mute()" class="btn btn-primary btn-sm" id="mute" value="Mute">
+            <input type="button" onclick="chaos()" class="btn btn-primary btn-sm" id="chaos" value="Chaos">
+        </div>
+
+        <br>
+
+        <div id="sounds" class="form-check">
+            <table id="sounds-table">
+
+            </table>
+        </div>
+
+        <script>
+            
 
             for (var sound in sounds) {
                 var s = sounds[sound];
@@ -100,10 +142,13 @@
                 setTimeout(checker, 1000);*/
 
                 for (var sound in sounds) {
+                    if (window.muteSounds) {
+                        continue;
+                    }
                     if (document.querySelector("#" + sound + ":checked") !== null) {
                         //console.log("checked");
                         sounds[sound]["mdelay"] = parseInt(jQuery("#" + sound + "-mdelay")[0].value);
-                        console.log(sound, sounds[sound]["mdelay"], sounds[sound]["sleep"]);
+                        //console.log(sound, sounds[sound]["mdelay"], sounds[sound]["sleep"]);
                         if (isNaN(sounds[sound]["sleep"])) {
                             sounds[sound]["sleep"] = parseInt(Math.random() * sounds[sound]["mdelay"]);
                             continue;

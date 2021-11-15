@@ -1,0 +1,157 @@
+<html>
+    <head>
+        <script type="text/javscript">
+            function play() {
+            var audio = new Audio("file://ding2.mp3");
+            audio.play();
+            }
+            window.onload = play;
+        </script>
+        <script src="howler.js"></script>
+        <script src="jquery-3.6.0.js"></script>
+        <script src="bootstrap.min.js"></script>
+        <link rel="stylesheet" href="bootstrap.min.css">
+    </head>
+    <body>
+        <Audio id="ding2" src="file://ding2.mp3"></Audio>
+        <script>
+            //document.getElementById("ding2").play();
+            /*function sleep (time) {
+                return new Promise((resolve) => setTimeout(resolve, time));
+            }
+            //sleep(3).then(() => {
+            function play2() {
+            var audio = new Audio("ding2.mp3");
+            audio.play();
+            setTimeout(play2, 10000);
+            }
+
+            play2();
+            /*while (true) {
+                setTimeout(play2, 3000);
+            }*/
+            
+        </script>
+
+        <!-- <label for="ding2">
+            <input type="checkbox" id="ding2" data="ding2.mp3" name="ding2"> ding2
+        </label> -->
+
+        <div id="sounds" class="form-check">
+            <table id="sounds-table">
+
+            </table>
+        </div>
+
+        <script>
+            var sounds = {
+                "ding2": { file: "sounds/ding2.mp3", mdelay: 60 },
+                "censor1": { file: "sounds/censor1.mp3", mdelay: 60},
+                "scream7": { file: "sounds/scream7.mp3", mdelay: 60},
+                "hammer1": { file: "sounds/hammer1.mp3", mdelay: 60}
+            }
+
+            for (var sound in sounds) {
+                var s = sounds[sound];
+                console.log(s);
+
+                var tr = jQuery("<tr>", {}).appendTo("#sounds-table");
+                
+                var td = jQuery("<td>", {}).appendTo(tr);
+                jQuery("<input>", {
+                    id: sound,
+                    type: "checkbox",
+                    class: "form-check-input"
+                }).appendTo(td);
+
+                var td = jQuery("<td>", {}).appendTo(tr);
+                jQuery("<label>", {
+                    for: sound,
+                    text: sound
+                }).appendTo(td);
+
+                var td = jQuery("<td>", {}).appendTo(tr);
+                jQuery("<input>", {
+                    id: sound + "-mdelay",
+                    type: "text",
+                    size: 1,
+                    style: "text-align:right",
+                    value: sounds[sound]["mdelay"]
+                }).appendTo(td);
+
+                //jQuery("<br>").appendTo("#sounds");
+                //$("#sounds").append("<label for=\"" + sound + "\">" + sound + "</label><br>");
+            }
+        </script>
+
+        <script>
+            /*jQuery.get("data://list.txt", function(data) {
+                console.log(data);
+            });*/
+            console.log("script")
+            function checker() {
+                /*if (document.querySelector("#ding2:checked") !== null) {
+                    console.log("in checker if")
+                    var ding2 = new Audio("ding2.mp3");
+                    ding2.play();
+                    setTimeout(checker, 1000);
+                    return;
+                }
+                setTimeout(checker, 1000);*/
+
+                for (var sound in sounds) {
+                    if (document.querySelector("#" + sound + ":checked") !== null) {
+                        //console.log("checked");
+                        sounds[sound]["mdelay"] = parseInt(jQuery("#" + sound + "-mdelay")[0].value);
+                        console.log(sound, sounds[sound]["mdelay"], sounds[sound]["sleep"]);
+                        if (isNaN(sounds[sound]["sleep"])) {
+                            sounds[sound]["sleep"] = parseInt(Math.random() * sounds[sound]["mdelay"]);
+                            continue;
+                        }
+                        if (sounds[sound]["sleep"] == 0) {
+                            var s = new Audio(sounds[sound]["file"]);
+                            s.play();
+                            sounds[sound]["sleep"] = parseInt(Math.random() * sounds[sound]["mdelay"]);
+                        } else {
+                            sounds[sound]["sleep"]--;
+                        }
+                    }
+                }
+                setTimeout(checker, 1000);
+            }
+            checker()
+          
+        </script>
+
+        <audio controls>
+            <source src="sounds/ding2.mp3" type="audio/mpeg">
+        </audio>
+
+        <!-- <script>
+            var sound = new Howl({
+            src: ['ding2.mp3'],
+            onplayerror: function() {
+              sound.once('unlock', function() {
+                sound.play();
+              });
+            }
+          });
+          
+          sound.play();
+        
+        </script> -->
+
+
+        <!-- <script>
+            sleep(3).then(() => {
+                var sound = new Howl({
+                    src: ['ding2.mp3'],
+                    autoplay: true
+                });
+            });
+        </script> -->
+          
+          
+
+    </body>
+</html> 

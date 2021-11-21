@@ -121,11 +121,18 @@
                     sounds[sound]['audio'].volume(v / 100);
                 }
             }
+
+            function set_timer(sound) {
+                var t = jQuery('#' + sound + '-at').prop('value');
+                console.log(t);
+                sounds[sound]['timer'] = t;
+            }
             
 
             for (var sound in sounds) {
                 var s = sounds[sound];
                 //console.log(s);
+                s['timer'] = null;
 
                 var tr = jQuery("<tr>", {}).appendTo("#sounds-table");
                 
@@ -166,6 +173,24 @@
                 }).appendTo(td);
                 
                 jQuery('#' + sound + '-volume').attr('onchange', 'volume(\"' + sound + '\")');
+
+                var td = jQuery("<td>", {}).appendTo(tr);
+                jQuery("<input>", {
+                    id: sound + "-at",
+                    type: "time",
+                    class: "form-control"
+                }).appendTo(td);
+
+                var td = jQuery("<td>", {}).appendTo(tr);
+                jQuery("<input>", {
+                    id: sound + "-at-btn",
+                    type: "button",
+                    class: "btn btn-primary btn-sm",
+                    value: "set"
+                }).appendTo(td);
+
+                jQuery('#' + sound + '-at-btn').attr('onclick', 'set_timer(\"' + sound + '\")');
+
                 //jQuery("<br>").appendTo("#sounds");
                 //$("#sounds").append("<label for=\"" + sound + "\">" + sound + "</label><br>");
             }
@@ -213,10 +238,37 @@
                             sounds[sound]["sleep"]--;
                         }
                     }
+
+                    if (timer(sounds[sound])) {
+                        if (sounds[sound]['audio'] === null) {
+                                //sounds[sound]['audio'] = new Audio(sounds[sound]['file']);
+                                sounds[sound]['audio'] = new Howl({
+                                    src: [sounds[sound]['file']],
+                                    volume: 1
+                                });
+                            }
+                            //var s = new Audio(sounds[sound]["file"]);
+                        sounds[sound]['audio'].play();    
+                    }
                 }
                 setTimeout(checker, 1000);
             }
             checker()
+
+            function timer(s) {
+                if (s['timer'] === null) {
+                    return false;
+                }
+                var d = new Date();
+                var current_time = d.getHours() + ":" + d.getMinutes();
+                //console.log("current time: ", current_time);
+                if (current_time.localeCompare(s['timer']) == 0) {
+                    //console.log("timer on");
+                    s['timer'] = null;
+                    return true;
+                }
+                return false;
+            }
           
         </script>
 

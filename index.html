@@ -40,19 +40,23 @@
         <script>
             //<sed replace
 			var sounds = {
-			"censor1": { file: "sounds/censor1.mp3", mdelay: 60 },
-			"clink-fart-med": { file: "sounds/clink-fart-med.mp3", mdelay: 60 },
-			"cough1": { file: "sounds/cough1.mp3", mdelay: 60 },
-			"ding2": { file: "sounds/ding2.mp3", mdelay: 60 },
-			"drum2": { file: "sounds/drum2.mp3", mdelay: 60 },
-			"engineer_no_1": { file: "sounds/engineer_no_1.mp3", mdelay: 60 },
-			"evillaugh": { file: "sounds/evillaugh.mp3", mdelay: 60 },
-			"hammer1": { file: "sounds/hammer1.mp3", mdelay: 60 },
-			"left_4_dead_witch_01": { file: "sounds/left_4_dead_witch_01.mp3", mdelay: 60 },
-			"movie_1": { file: "sounds/movie_1.mp3", mdelay: 60 },
-			"scream7": { file: "sounds/scream7.mp3", mdelay: 60 },
-			"tool_cooker": { file: "sounds/tool_cooker.mp3", mdelay: 60 },
-			"trapbuzz": { file: "sounds/trapbuzz.mp3", mdelay: 60 },
+			"censor1": { file: "sounds/censor1.mp3", mdelay: 60, audio: null },
+			"clink-fart-med": { file: "sounds/clink-fart-med.mp3", mdelay: 60, audio: null },
+			"cough1": { file: "sounds/cough1.mp3", mdelay: 60, audio: null },
+			"ding2": { file: "sounds/ding2.mp3", mdelay: 60, audio: null },
+			"drum2": { file: "sounds/drum2.mp3", mdelay: 60, audio: null },
+			"engineer_no_1": { file: "sounds/engineer_no_1.mp3", mdelay: 60, audio: null },
+			"evillaugh": { file: "sounds/evillaugh.mp3", mdelay: 60, audio: null },
+			"female_scream_horror-neophyte": { file: "sounds/female_scream_horror-neophyte.mp3", mdelay: 60, audio: null },
+			"hammer1": { file: "sounds/hammer1.mp3", mdelay: 60, audio: null },
+			"left_4_dead_witch_01": { file: "sounds/left_4_dead_witch_01.mp3", mdelay: 60, audio: null },
+			"mario-ugh": { file: "sounds/mario-ugh.mp3", mdelay: 60, audio: null },
+			"movie_1": { file: "sounds/movie_1.mp3", mdelay: 60, audio: null },
+			"perfect-fart": { file: "sounds/perfect-fart.mp3", mdelay: 60, audio: null },
+			"scream7": { file: "sounds/scream7.mp3", mdelay: 60, audio: null },
+			"siren-head-sounds-new": { file: "sounds/siren-head-sounds-new.mp3", mdelay: 60, audio: null },
+			"tool_cooker": { file: "sounds/tool_cooker.mp3", mdelay: 60, audio: null },
+			"trapbuzz": { file: "sounds/trapbuzz.mp3", mdelay: 60, audio: null },
 			}
 			//sed replace>
         </script>
@@ -60,9 +64,9 @@
         <script>
             window.muteSounds = false;
             function shutdown() {
-                console.log("in shutdown");
+                //console.log("in shutdown");
                 for (var sound in sounds) {
-                    console.log(sound);
+                    //console.log(sound);
                     jQuery("#" + sound).prop("checked", false);
                 }
             }
@@ -106,7 +110,7 @@
 
             for (var sound in sounds) {
                 var s = sounds[sound];
-                console.log(s);
+                //console.log(s);
 
                 var tr = jQuery("<tr>", {}).appendTo("#sounds-table");
                 
@@ -165,8 +169,11 @@
                             continue;
                         }
                         if (sounds[sound]["sleep"] == 0) {
-                            var s = new Audio(sounds[sound]["file"]);
-                            s.play();
+                            if (sounds[sound]['audio'] === null) {
+                                sounds[sound]['audio'] = new Audio(sounds[sound]['file']);
+                            }
+                            //var s = new Audio(sounds[sound]["file"]);
+                            sounds[sound]['audio'].play();
                             sounds[sound]["sleep"] = parseInt(Math.random() * sounds[sound]["mdelay"]);
                         } else {
                             sounds[sound]["sleep"]--;
@@ -183,6 +190,41 @@
             <source src="sounds/ding2.mp3" type="audio/mpeg">
         </audio>
 
+        <br>
+        <script>
+            function perfmon() {
+                var mem = window.performance.memory;
+                jQuery('#jsHeapSizeLimit').text(mem.jsHeapSizeLimit);
+                jQuery('#totalJSHeapSize').text(mem.totalJSHeapSize);
+                jQuery('#usedJSHeapSize').text(mem.usedJSHeapSize);
+
+                setTimeout(perfmon, 2000);
+            }
+            perfmon();
+        </script>
+
+        <div id="performance">
+            <table>
+                <tr>
+                    <td>jsHeapSizeLimit</td>
+                    <td id="jsHeapSizeLimit"></td>
+                </tr>
+                <tr>
+                    <td>totalJSHeapSize</td>
+                    <td id="totalJSHeapSize"></td>
+                </tr>
+                <tr>
+                    <td>usedJSHeapSize</td>
+                    <td id="usedJSHeapSize"></td>
+                </tr>
+            </table>
+            <!-- <label>jsHeapSizeLimit: </label>
+            <p id="jsHeapSizeLimit"></p>
+            <label>totalJSHeapSize: </label>
+            <p id="totalJSHeapSize"></p>
+            <label>usedJSHeapSize: </label>
+            <p id="usedJSHeapSize"></p> -->
+        </div>
         <!-- <script>
             var sound = new Howl({
             src: ['ding2.mp3'],

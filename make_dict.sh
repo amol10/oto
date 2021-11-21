@@ -7,7 +7,7 @@ for file in `ls sounds`
 do
     #str=$( printf $str\\t$file\\n )
     sound=${file::-4}
-    printf "\\t\\t\\t\"$sound\": { file: \"sounds/$file\", mdelay: $mdelay },\\n"
+    printf "\\t\\t\\t\"$sound\": { file: \"sounds/$file\", mdelay: $mdelay, audio: null },\\n"
 done
 
 printf "\\t\\t\\t}\n"

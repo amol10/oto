@@ -11,10 +11,11 @@
         <script src="jquery-3.6.0.js"></script>
         <script src="bootstrap.min.js"></script>
         <link rel="stylesheet" href="bootstrap.min.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
     <body>
         <!-- <Audio id="ding2" src="file://ding2.mp3"></Audio> -->
-        <script>
+        <script>    
             //document.getElementById("ding2").play();
             /*function sleep (time) {
                 return new Promise((resolve) => setTimeout(resolve, time));
@@ -144,8 +145,11 @@
                 var td = jQuery("<td>", {}).appendTo(tr);
                 jQuery("<input>", {
                     id: sound + "-mdelay",
-                    type: "text",
-                    size: 1,
+                    type: "number",
+                    min: 0,
+                    max: 5000,
+                    step: 10,
+                    //size: 1,
                     style: "text-align:right",
                     class: "form-control",
                     value: sounds[sound]["mdelay"]

@@ -100,12 +100,26 @@
         <br>
 
         <div id="sounds" class="form-check">
-            <table id="sounds-table">
+            <table id="sounds-table" class="table-borderless">
 
             </table>
         </div>
 
         <script>
+            function volume(sound) {
+                var v = jQuery('#' + sound + '-volume').prop('value');
+                console.log(v / 100);
+
+                console.log("volume: ", v);
+                if (sounds[sound]['audio'] === null) {
+                    sounds[sound]['audio'] = new Howl({
+                        src: [sounds[sound]['file']],
+                        volume: v / 100
+                    });
+                } else {
+                    sounds[sound]['audio'].volume(v / 100);
+                }
+            }
             
 
             for (var sound in sounds) {
@@ -133,9 +147,21 @@
                     type: "text",
                     size: 1,
                     style: "text-align:right",
+                    class: "form-control",
                     value: sounds[sound]["mdelay"]
                 }).appendTo(td);
 
+                var td = jQuery("<td>", {}).appendTo(tr);
+                jQuery("<input>", {
+                    id: sound + "-volume",
+                    type: "range",
+                    class: "form-range px-2",
+                    min: 0,
+                    max: 100,
+                    value: 100
+                }).appendTo(td);
+                
+                jQuery('#' + sound + '-volume').attr('onchange', 'volume(\"' + sound + '\")');
                 //jQuery("<br>").appendTo("#sounds");
                 //$("#sounds").append("<label for=\"" + sound + "\">" + sound + "</label><br>");
             }
@@ -170,7 +196,11 @@
                         }
                         if (sounds[sound]["sleep"] == 0) {
                             if (sounds[sound]['audio'] === null) {
-                                sounds[sound]['audio'] = new Audio(sounds[sound]['file']);
+                                //sounds[sound]['audio'] = new Audio(sounds[sound]['file']);
+                                sounds[sound]['audio'] = new Howl({
+                                    src: [sounds[sound]['file']],
+                                    volume: 1
+                                });
                             }
                             //var s = new Audio(sounds[sound]["file"]);
                             sounds[sound]['audio'].play();
@@ -225,9 +255,9 @@
             <label>usedJSHeapSize: </label>
             <p id="usedJSHeapSize"></p> -->
         </div>
-        <!-- <script>
+        <script>
             var sound = new Howl({
-            src: ['ding2.mp3'],
+            src: ['sounds/ding2.mp3'],
             onplayerror: function() {
               sound.once('unlock', function() {
                 sound.play();
@@ -237,7 +267,7 @@
           
           sound.play();
         
-        </script> -->
+        </script>
 
 
         <!-- <script>

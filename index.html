@@ -12,6 +12,8 @@
         <script src="bootstrap.min.js"></script>
         <link rel="stylesheet" href="bootstrap.min.css">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <script src="sounds.json"></script>
     </head>
     <body>
         <!-- <Audio id="ding2" src="file://ding2.mp3"></Audio> -->
@@ -40,25 +42,8 @@
 
         <script>
             //<sed replace
-			var sounds = {
-			"censor1": { file: "sounds/censor1.mp3", mdelay: 60, audio: null },
-			"clink-fart-med": { file: "sounds/clink-fart-med.mp3", mdelay: 60, audio: null },
-			"cough1": { file: "sounds/cough1.mp3", mdelay: 60, audio: null },
-			"ding2": { file: "sounds/ding2.mp3", mdelay: 60, audio: null },
-			"drum2": { file: "sounds/drum2.mp3", mdelay: 60, audio: null },
-			"engineer_no_1": { file: "sounds/engineer_no_1.mp3", mdelay: 60, audio: null },
-			"evillaugh": { file: "sounds/evillaugh.mp3", mdelay: 60, audio: null },
-			"female_scream_horror-neophyte": { file: "sounds/female_scream_horror-neophyte.mp3", mdelay: 60, audio: null },
-			"hammer1": { file: "sounds/hammer1.mp3", mdelay: 60, audio: null },
-			"left_4_dead_witch_01": { file: "sounds/left_4_dead_witch_01.mp3", mdelay: 60, audio: null },
-			"mario-ugh": { file: "sounds/mario-ugh.mp3", mdelay: 60, audio: null },
-			"movie_1": { file: "sounds/movie_1.mp3", mdelay: 60, audio: null },
-			"perfect-fart": { file: "sounds/perfect-fart.mp3", mdelay: 60, audio: null },
-			"scream7": { file: "sounds/scream7.mp3", mdelay: 60, audio: null },
-			"siren-head-sounds-new": { file: "sounds/siren-head-sounds-new.mp3", mdelay: 60, audio: null },
-			"tool_cooker": { file: "sounds/tool_cooker.mp3", mdelay: 60, audio: null },
-			"trapbuzz": { file: "sounds/trapbuzz.mp3", mdelay: 60, audio: null },
-			}
+			var sounds = JSON.parse(sounds_json);
+            console.log(sounds);
 			//sed replace>
 
             var heartbeat = new Howl({

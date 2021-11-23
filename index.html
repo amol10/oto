@@ -42,12 +42,12 @@
 
         <script>
             //<sed replace
-			var sounds = JSON.parse(sounds_json);
-            console.log(sounds);
+			var sounds_data = JSON.parse(sounds_json);
+            console.log(sounds_data);
 			//sed replace>
 
             var heartbeat = new Howl({
-                src: ['sounds/ding2.mp3'],
+                src: ['sounds/misc/ding2.mp3'],
                 volume: 0.1
             });
         </script>
@@ -119,70 +119,74 @@
             }
             
 
-            for (var sound in sounds) {
-                var s = sounds[sound];
-                //console.log(s);
-                s['timer'] = null;
+            for (var category in sounds_data) {
+                console.log("category:", category);
+                var sounds = sounds_data[category];
+                for (var sound in sounds) {
+                    var s = sounds[sound];
+                    //console.log(s);
+                    s['timer'] = null;
 
-                var tr = jQuery("<tr>", {}).appendTo("#sounds-table");
-                
-                var td = jQuery("<td>", {}).appendTo(tr);
-                jQuery("<input>", {
-                    id: sound,
-                    type: "checkbox",
-                    class: "form-check-input"
-                }).appendTo(td);
+                    var tr = jQuery("<tr>", {}).appendTo("#sounds-table");
+                    
+                    var td = jQuery("<td>", {}).appendTo(tr);
+                    jQuery("<input>", {
+                        id: sound,
+                        type: "checkbox",
+                        class: "form-check-input"
+                    }).appendTo(td);
 
-                var td = jQuery("<td>", {}).appendTo(tr);
-                jQuery("<label>", {
-                    for: sound,
-                    text: sound
-                }).appendTo(td);
+                    var td = jQuery("<td>", {}).appendTo(tr);
+                    jQuery("<label>", {
+                        for: sound,
+                        text: sound
+                    }).appendTo(td);
 
-                var td = jQuery("<td>", {}).appendTo(tr);
-                jQuery("<input>", {
-                    id: sound + "-mdelay",
-                    type: "number",
-                    min: 0,
-                    max: 5000,
-                    step: 10,
-                    //size: 1,
-                    style: "text-align:right",
-                    class: "form-control",
-                    value: sounds[sound]["mdelay"]
-                }).appendTo(td);
+                    var td = jQuery("<td>", {}).appendTo(tr);
+                    jQuery("<input>", {
+                        id: sound + "-mdelay",
+                        type: "number",
+                        min: 0,
+                        max: 5000,
+                        step: 10,
+                        //size: 1,
+                        style: "text-align:right",
+                        class: "form-control",
+                        value: sounds[sound]["mdelay"]
+                    }).appendTo(td);
 
-                var td = jQuery("<td>", {}).appendTo(tr);
-                jQuery("<input>", {
-                    id: sound + "-volume",
-                    type: "range",
-                    class: "form-range px-2",
-                    min: 0,
-                    max: 100,
-                    value: 100
-                }).appendTo(td);
-                
-                jQuery('#' + sound + '-volume').attr('onchange', 'volume(\"' + sound + '\")');
+                    var td = jQuery("<td>", {}).appendTo(tr);
+                    jQuery("<input>", {
+                        id: sound + "-volume",
+                        type: "range",
+                        class: "form-range px-2",
+                        min: 0,
+                        max: 100,
+                        value: 100
+                    }).appendTo(td);
+                    
+                    jQuery('#' + sound + '-volume').attr('onchange', 'volume(\"' + sound + '\")');
 
-                var td = jQuery("<td>", {}).appendTo(tr);
-                jQuery("<input>", {
-                    id: sound + "-at",
-                    type: "time",
-                    class: "form-control"
-                }).appendTo(td);
+                    var td = jQuery("<td>", {}).appendTo(tr);
+                    jQuery("<input>", {
+                        id: sound + "-at",
+                        type: "time",
+                        class: "form-control"
+                    }).appendTo(td);
 
-                var td = jQuery("<td>", {}).appendTo(tr);
-                jQuery("<input>", {
-                    id: sound + "-at-btn",
-                    type: "button",
-                    class: "btn btn-primary btn-sm",
-                    value: "set"
-                }).appendTo(td);
+                    var td = jQuery("<td>", {}).appendTo(tr);
+                    jQuery("<input>", {
+                        id: sound + "-at-btn",
+                        type: "button",
+                        class: "btn btn-primary btn-sm",
+                        value: "set"
+                    }).appendTo(td);
 
-                jQuery('#' + sound + '-at-btn').attr('onclick', 'set_timer(\"' + sound + '\")');
+                    jQuery('#' + sound + '-at-btn').attr('onclick', 'set_timer(\"' + sound + '\")');
 
-                //jQuery("<br>").appendTo("#sounds");
-                //$("#sounds").append("<label for=\"" + sound + "\">" + sound + "</label><br>");
+                    //jQuery("<br>").appendTo("#sounds");
+                    //$("#sounds").append("<label for=\"" + sound + "\">" + sound + "</label><br>");
+                }
             }
         </script>
 
@@ -201,44 +205,47 @@
                 }
                 setTimeout(checker, 1000);*/
 
-                for (var sound in sounds) {
-                    if (window.muteSounds) {
-                        continue;
-                    }
-                    if (document.querySelector("#" + sound + ":checked") !== null) {
-                        //console.log("checked");
-                        sounds[sound]["mdelay"] = parseInt(jQuery("#" + sound + "-mdelay")[0].value);
-                        //console.log(sound, sounds[sound]["mdelay"], sounds[sound]["sleep"]);
-                        if (isNaN(sounds[sound]["sleep"])) {
-                            sounds[sound]["sleep"] = parseInt(Math.random() * sounds[sound]["mdelay"]);
+                for (var category in sounds_data) {
+                    var sounds = sounds_data[category];
+                    for (var sound in sounds) {
+                        if (window.muteSounds) {
                             continue;
                         }
-                        if (sounds[sound]["sleep"] == 0) {
-                            if (sounds[sound]['audio'] === null) {
-                                //sounds[sound]['audio'] = new Audio(sounds[sound]['file']);
-                                sounds[sound]['audio'] = new Howl({
-                                    src: [sounds[sound]['file']],
-                                    volume: 1
-                                });
+                        if (document.querySelector("#" + sound + ":checked") !== null) {
+                            //console.log("checked");
+                            sounds[sound]["mdelay"] = parseInt(jQuery("#" + sound + "-mdelay")[0].value);
+                            //console.log(sound, sounds[sound]["mdelay"], sounds[sound]["sleep"]);
+                            if (isNaN(sounds[sound]["sleep"])) {
+                                sounds[sound]["sleep"] = parseInt(Math.random() * sounds[sound]["mdelay"]);
+                                continue;
                             }
-                            //var s = new Audio(sounds[sound]["file"]);
-                            sounds[sound]['audio'].play();
-                            sounds[sound]["sleep"] = parseInt(Math.random() * sounds[sound]["mdelay"]);
-                        } else {
-                            sounds[sound]["sleep"]--;
+                            if (sounds[sound]["sleep"] == 0) {
+                                if (sounds[sound]['audio'] === null) {
+                                    //sounds[sound]['audio'] = new Audio(sounds[sound]['file']);
+                                    sounds[sound]['audio'] = new Howl({
+                                        src: [sounds[sound]['file']],
+                                        volume: 1
+                                    });
+                                }
+                                //var s = new Audio(sounds[sound]["file"]);
+                                sounds[sound]['audio'].play();
+                                sounds[sound]["sleep"] = parseInt(Math.random() * sounds[sound]["mdelay"]);
+                            } else {
+                                sounds[sound]["sleep"]--;
+                            }
                         }
-                    }
 
-                    if (timer(sounds[sound])) {
-                        if (sounds[sound]['audio'] === null) {
-                                //sounds[sound]['audio'] = new Audio(sounds[sound]['file']);
-                                sounds[sound]['audio'] = new Howl({
-                                    src: [sounds[sound]['file']],
-                                    volume: 1
-                                });
-                            }
-                            //var s = new Audio(sounds[sound]["file"]);
-                        sounds[sound]['audio'].play();    
+                        if (timer(sounds[sound])) {
+                            if (sounds[sound]['audio'] === null) {
+                                    //sounds[sound]['audio'] = new Audio(sounds[sound]['file']);
+                                    sounds[sound]['audio'] = new Howl({
+                                        src: [sounds[sound]['file']],
+                                        volume: 1
+                                    });
+                                }
+                                //var s = new Audio(sounds[sound]["file"]);
+                            sounds[sound]['audio'].play();    
+                        }
                     }
                 }
                 alive();
@@ -268,7 +275,7 @@
         </script>
 
         <audio controls>
-            <source src="sounds/ding2.mp3" type="audio/mpeg">
+            <source src="sounds/misc/ding2.mp3" type="audio/mpeg">
         </audio>
 
         <br>
@@ -308,7 +315,7 @@
         </div>
         <script>
             var sound = new Howl({
-            src: ['sounds/ding2.mp3'],
+            src: ['sounds/misc/ding2.mp3'],
             onplayerror: function() {
               sound.once('unlock', function() {
                 sound.play();

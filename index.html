@@ -12,8 +12,9 @@
         <script src="bootstrap.min.js"></script>
         <link rel="stylesheet" href="bootstrap.min.css">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-
         <script src="sounds.json"></script>
+        <script src="lib.js"></script>
+
     </head>
     <body>
         <!-- <Audio id="ding2" src="file://ding2.mp3"></Audio> -->
@@ -40,48 +41,7 @@
             <input type="checkbox" id="ding2" data="ding2.mp3" name="ding2"> ding2
         </label> -->
 
-        <script>
-            //<sed replace
-			var sounds_data = JSON.parse(sounds_json);
-            console.log(sounds_data);
-			//sed replace>
-
-            var heartbeat = new Howl({
-                src: ['sounds/misc/ding2.mp3'],
-                volume: 0.1
-            });
-        </script>
-
-        <script>
-            window.muteSounds = false;
-            function shutdown() {
-                //console.log("in shutdown");
-                for (var sound in sounds) {
-                    //console.log(sound);
-                    jQuery("#" + sound).prop("checked", false);
-                }
-            }
-
-            function mute() {
-                if (window.muteSounds == false) {
-                    window.muteSounds = true;
-                    jQuery("#mute").prop("value", "Unmute");
-                } else {
-                    window.muteSounds = false;
-                    jQuery("#mute").prop("value", "Mute");
-                }
-            }
-
-            function chaos() {
-                if (confirm("Are you sure?")) {
-                    for (var sound in sounds) {
-                        jQuery("#" + sound).prop("checked", true);
-                        jQuery("#" + sound + "-mdelay").prop("value", parseInt(Math.random() * 30));
-                    }
-                }
-            }
-        </script>
-
+        
         <div id="controls">
             <input type="button" onclick="shutdown()" class="btn btn-primary btn-sm" id="shutdown" value="Shutdown">
             <input type="button" onclick="mute()" class="btn btn-primary btn-sm" id="mute" value="Mute">
@@ -97,200 +57,16 @@
         </div>
 
         <script>
-            function volume(sound) {
-                var v = jQuery('#' + sound + '-volume').prop('value');
-                console.log(v / 100);
-
-                console.log("volume: ", v);
-                if (sounds[sound]['audio'] === null) {
-                    sounds[sound]['audio'] = new Howl({
-                        src: [sounds[sound]['file']],
-                        volume: v / 100
-                    });
-                } else {
-                    sounds[sound]['audio'].volume(v / 100);
-                }
-            }
-
-            function set_timer(sound) {
-                var t = jQuery('#' + sound + '-at').prop('value');
-                console.log(t);
-                sounds[sound]['timer'] = t;
-            }
-            
-
-            for (var category in sounds_data) {
-                console.log("category:", category);
-                var sounds = sounds_data[category];
-                for (var sound in sounds) {
-                    var s = sounds[sound];
-                    //console.log(s);
-                    s['timer'] = null;
-
-                    var tr = jQuery("<tr>", {}).appendTo("#sounds-table");
-                    
-                    var td = jQuery("<td>", {}).appendTo(tr);
-                    jQuery("<input>", {
-                        id: sound,
-                        type: "checkbox",
-                        class: "form-check-input"
-                    }).appendTo(td);
-
-                    var td = jQuery("<td>", {}).appendTo(tr);
-                    jQuery("<label>", {
-                        for: sound,
-                        text: sound
-                    }).appendTo(td);
-
-                    var td = jQuery("<td>", {}).appendTo(tr);
-                    jQuery("<input>", {
-                        id: sound + "-mdelay",
-                        type: "number",
-                        min: 0,
-                        max: 5000,
-                        step: 10,
-                        //size: 1,
-                        style: "text-align:right",
-                        class: "form-control",
-                        value: sounds[sound]["mdelay"]
-                    }).appendTo(td);
-
-                    var td = jQuery("<td>", {}).appendTo(tr);
-                    jQuery("<input>", {
-                        id: sound + "-volume",
-                        type: "range",
-                        class: "form-range px-2",
-                        min: 0,
-                        max: 100,
-                        value: 100
-                    }).appendTo(td);
-                    
-                    jQuery('#' + sound + '-volume').attr('onchange', 'volume(\"' + sound + '\")');
-
-                    var td = jQuery("<td>", {}).appendTo(tr);
-                    jQuery("<input>", {
-                        id: sound + "-at",
-                        type: "time",
-                        class: "form-control"
-                    }).appendTo(td);
-
-                    var td = jQuery("<td>", {}).appendTo(tr);
-                    jQuery("<input>", {
-                        id: sound + "-at-btn",
-                        type: "button",
-                        class: "btn btn-primary btn-sm",
-                        value: "set"
-                    }).appendTo(td);
-
-                    jQuery('#' + sound + '-at-btn').attr('onclick', 'set_timer(\"' + sound + '\")');
-
-                    //jQuery("<br>").appendTo("#sounds");
-                    //$("#sounds").append("<label for=\"" + sound + "\">" + sound + "</label><br>");
-                }
-            }
+            list_sounds();
         </script>
-
-        <script>
-            /*jQuery.get("data://list.txt", function(data) {
-                console.log(data);
-            });*/
-            console.log("script")
-            function checker() {
-                /*if (document.querySelector("#ding2:checked") !== null) {
-                    console.log("in checker if")
-                    var ding2 = new Audio("ding2.mp3");
-                    ding2.play();
-                    setTimeout(checker, 1000);
-                    return;
-                }
-                setTimeout(checker, 1000);*/
-
-                for (var category in sounds_data) {
-                    var sounds = sounds_data[category];
-                    for (var sound in sounds) {
-                        if (window.muteSounds) {
-                            continue;
-                        }
-                        if (document.querySelector("#" + sound + ":checked") !== null) {
-                            //console.log("checked");
-                            sounds[sound]["mdelay"] = parseInt(jQuery("#" + sound + "-mdelay")[0].value);
-                            //console.log(sound, sounds[sound]["mdelay"], sounds[sound]["sleep"]);
-                            if (isNaN(sounds[sound]["sleep"])) {
-                                sounds[sound]["sleep"] = parseInt(Math.random() * sounds[sound]["mdelay"]);
-                                continue;
-                            }
-                            if (sounds[sound]["sleep"] == 0) {
-                                if (sounds[sound]['audio'] === null) {
-                                    //sounds[sound]['audio'] = new Audio(sounds[sound]['file']);
-                                    sounds[sound]['audio'] = new Howl({
-                                        src: [sounds[sound]['file']],
-                                        volume: 1
-                                    });
-                                }
-                                //var s = new Audio(sounds[sound]["file"]);
-                                sounds[sound]['audio'].play();
-                                sounds[sound]["sleep"] = parseInt(Math.random() * sounds[sound]["mdelay"]);
-                            } else {
-                                sounds[sound]["sleep"]--;
-                            }
-                        }
-
-                        if (timer(sounds[sound])) {
-                            if (sounds[sound]['audio'] === null) {
-                                    //sounds[sound]['audio'] = new Audio(sounds[sound]['file']);
-                                    sounds[sound]['audio'] = new Howl({
-                                        src: [sounds[sound]['file']],
-                                        volume: 1
-                                    });
-                                }
-                                //var s = new Audio(sounds[sound]["file"]);
-                            sounds[sound]['audio'].play();    
-                        }
-                    }
-                }
-                alive();
-                setTimeout(checker, 1000);
-            }
-            checker()
-
-            function timer(s) {
-                if (s['timer'] === null) {
-                    return false;
-                }
-                var d = new Date();
-                var current_time = d.getHours() + ":" + d.getMinutes();
-                //console.log("current time: ", current_time);
-                if (current_time.localeCompare(s['timer']) == 0) {
-                    //console.log("timer on");
-                    s['timer'] = null;
-                    return true;
-                }
-                return false;
-            }
-
-            function alive() {
-                heartbeat.play();
-            }
-          
-        </script>
-
+   
+  
         <audio controls>
             <source src="sounds/misc/ding2.mp3" type="audio/mpeg">
         </audio>
 
         <br>
-        <script>
-            function perfmon() {
-                var mem = window.performance.memory;
-                jQuery('#jsHeapSizeLimit').text(mem.jsHeapSizeLimit);
-                jQuery('#totalJSHeapSize').text(mem.totalJSHeapSize);
-                jQuery('#usedJSHeapSize').text(mem.usedJSHeapSize);
-
-                setTimeout(perfmon, 2000);
-            }
-            perfmon();
-        </script>
-
+        
         <div id="performance">
             <table>
                 <tr>

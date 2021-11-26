@@ -42,11 +42,7 @@
         </label> -->
 
         
-        <div id="controls">
-            <input type="button" onclick="shutdown()" class="btn btn-primary btn-sm" id="shutdown" value="Shutdown">
-            <input type="button" onclick="mute()" class="btn btn-primary btn-sm" id="mute" value="Mute">
-            <input type="button" onclick="chaos()" class="btn btn-primary btn-sm" id="chaos" value="Chaos">
-        </div>
+        
 
         <br>
 
@@ -64,7 +60,44 @@
 
         <div id="container-div" class="form-check">
             <div id="main-div" >
-                <table id="main-table" class="table-borderless">
+                <table id="main-table" class="table-borderless px-2">
+                    <tr>
+                        <div id="controls">
+                            <input type="button" onclick="shutdown()" class="btn btn-primary btn-sm" id="shutdown" value="Shutdown">
+                            <input type="button" onclick="mute()" class="btn btn-primary btn-sm" id="mute" value="Mute">
+                            <input type="button" onclick="chaos()" class="btn btn-primary btn-sm" id="chaos" value="Chaos">
+                            <input type="button" class="btn btn-primary btn-sm" onclick="test()" id="test" value="Test">
+                        </div>
+                    </tr>
+                    <tr>
+                        <div id="performance">
+                            <table>
+                                <tr>
+                                    <td>jsHeapSizeLimit</td>
+                                    <td id="jsHeapSizeLimit"></td>
+                                </tr>
+                                <tr>
+                                    <td>totalJSHeapSize</td>
+                                    <td id="totalJSHeapSize"></td>
+                                </tr>
+                                <tr>
+                                    <td>usedJSHeapSize</td>
+                                    <td id="usedJSHeapSize"></td>
+                                </tr>
+                            </table>
+                            <!-- <label>jsHeapSizeLimit: </label>
+                            <p id="jsHeapSizeLimit"></p>
+                            <label>totalJSHeapSize: </label>
+                            <p id="totalJSHeapSize"></p>
+                            <label>usedJSHeapSize: </label>
+                            <p id="usedJSHeapSize"></p> -->
+                        </div>
+                    </tr>
+                    <tr>
+                        <div id="test">
+                            
+                        </div>
+                    </tr>
 
                 </table>
             </div>
@@ -75,45 +108,13 @@
         </script>
    
   
-        <audio controls>
-            <source src="sounds/misc/ding2.mp3" type="audio/mpeg">
-        </audio>
+       
 
         <br>
         
-        <div id="performance">
-            <table>
-                <tr>
-                    <td>jsHeapSizeLimit</td>
-                    <td id="jsHeapSizeLimit"></td>
-                </tr>
-                <tr>
-                    <td>totalJSHeapSize</td>
-                    <td id="totalJSHeapSize"></td>
-                </tr>
-                <tr>
-                    <td>usedJSHeapSize</td>
-                    <td id="usedJSHeapSize"></td>
-                </tr>
-            </table>
-            <!-- <label>jsHeapSizeLimit: </label>
-            <p id="jsHeapSizeLimit"></p>
-            <label>totalJSHeapSize: </label>
-            <p id="totalJSHeapSize"></p>
-            <label>usedJSHeapSize: </label>
-            <p id="usedJSHeapSize"></p> -->
-        </div>
+        
         <script>
-            var sound = new Howl({
-            src: ['sounds/misc/ding2.mp3'],
-            onplayerror: function() {
-              sound.once('unlock', function() {
-                sound.play();
-              });
-            }
-          });
-          
-          sound.play();
+        
         
         </script>
 

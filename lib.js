@@ -117,7 +117,6 @@ function add_category_html(category, active) {
 
     var div = jQuery("<div>", {
         id: category + '-div',
-        text: category
     });
 
     jQuery("<table>", {
@@ -147,7 +146,7 @@ function list_sounds() {
             //console.log(s);
             s['timer'] = null;
 
-            var tr = jQuery("<tr>", {}).appendTo("#sounds-table");
+            var tr = jQuery("<tr>", {}).appendTo("#" + category + "-table");
             var catsnd = cat_snd(category, sound);
             
             var td = jQuery("<td>", {}).appendTo(tr);
@@ -306,3 +305,15 @@ function perfmon() {
 }
 perfmon();
 
+function test() {
+    var sound = new Howl({
+        src: ['sounds/misc/ding2.mp3'],
+        onplayerror: function() {
+          sound.once('unlock', function() {
+            sound.play();
+          });
+        }
+      });
+      
+    sound.play();
+}

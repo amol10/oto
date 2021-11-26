@@ -11,6 +11,9 @@ var heartbeat = new Howl({
 
 
 window.muteSounds = false;
+
+window.active_tab = null;
+
 function shutdown() {
     //console.log("in shutdown");
     for (var sound in sounds) {
@@ -67,11 +70,77 @@ function cat_snd(category, sound) {
     return category + '-' + sound;
 }
 
+function ontab(category) {
+    console.log("ontab", category);
+
+    var tabs = ["main"].concat(Object.keys(sounds_data));
+    console.log(tabs);
+
+    for (var i = 0; i < tabs.length; i++) {
+        var t = tabs[i];
+        if (t.localeCompare(category) == 0) {
+            jQuery('#' + t + '-div').show();
+            jQuery('#' + t + '-link').prop('class', 'nav-link active');
+            jQuery('#' + t + '-link').prop('aria-current', 'page');
+            console.log("active:", t);
+        } else {
+            jQuery('#' + t + '-div').hide();
+            jQuery('#' + t + '-link').prop('class', 'nav-link');
+            jQuery('#' + t + '-link').prop('aria-current', 'false');
+            console.log("inactive:", t);
+        }
+    }
+
+}
+function add_category_html(category, active) {
+    var ul = jQuery('#tabs');
+
+    var li = jQuery("<li>", {
+        class: "nav-item"
+    });
+
+    var active = active ? " active" : "";
+    var aria_cur = active ? "page" : "false";
+
+    jQuery("<a>", {
+        id: category + '-link',
+        class: "nav-link" + active,
+        "aria-current": aria_cur,
+        href: "#",
+        text: cap_first_letter(category),
+        onclick: "ontab(\'" + category + "\')"
+    }).appendTo(li);
+    li.appendTo(ul);
+
+    var container_div = jQuery('#container-div');
+    console.log(container_div)
+
+    var div = jQuery("<div>", {
+        id: category + '-div',
+        text: category
+    });
+
+    jQuery("<table>", {
+        id: category + '-table',
+        class: "table-borderless"
+    }).appendTo(div);
+    div.appendTo(container_div);
+
+    div.hide();
+
+}
+
+function cap_first_letter(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
 function list_sounds() {
     console.log("in list_sounds");
     console.log(window.sounds_data);
     for (var category in window.sounds_data) {
         console.log("category:", category);
+        add_category_html(category);
+
         var sounds = sounds_data[category];
         for (var sound in sounds) {
             var s = sounds[sound];

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-mdelay=20
+mdelay=$3
 counts=()
 duration=$2
 
@@ -8,7 +8,7 @@ if [[ -d temp ]]
 then
     rm temp/*.*
 fi
-sounds=($(find . -regex ".*.mp3" -not -regex ".*horror.*" -not -regex ".*tools.*" | shuf -n $1))
+sounds=($(find . -regex ".*censor..mp3" -not -regex ".*horror.*" -not -regex ".*tools.*" | shuf -n $1))
 
 for sound in "${sounds[@]}"
 do
@@ -54,7 +54,9 @@ do
     s="${temps[$i]}"
     echo s: $s
     ttfn="temp/tfn$c.mp3"
-    sox -n -r 44100 -c 2 temp/slc.mp3 trim 0 $(echo "$RANDOM%$mdelay" | bc)
+    md=$(echo "$RANDOM%$mdelay+1" | bc)
+    echo md: $md
+    sox -n -r 44100 -c 2 temp/slc.mp3 trim 0 $md
 
     sox $tfn $s temp/slc.mp3 $ttfn
     tfn=$ttfn

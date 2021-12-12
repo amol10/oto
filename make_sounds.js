@@ -37,7 +37,8 @@ for (var i = 0; i < dirs.length; i++) {
             'file': 'sounds/' + dir + '/' + file,
             'mdelay': 60,
             'audio': null,
-            'timer': null
+            'timer': null,
+            'start_time': null
         } 
     }
 }

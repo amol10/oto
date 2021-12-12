@@ -1,70 +1,30 @@
 <html>
     <head>
-        <script type="text/javscript">
-            function play() {
-            var audio = new Audio("file://ding2.mp3");
-            audio.play();
-            }
-            window.onload = play;
-        </script>
+        
         <script src="howler.js"></script>
         <script src="jquery-3.6.0.js"></script>
         <script src="bootstrap.min.js"></script>
         <link rel="stylesheet" href="bootstrap.min.css">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <script src="sounds.json"></script>
-        <script src="time.js"></script>
         <script src="lib.js"></script>
-
+        
         <script src="settings.json"></script>
         <script src="settings.js"></script>
 
     </head>
     <body>
-        <!-- <Audio id="ding2" src="file://ding2.mp3"></Audio> -->
-        <script>    
-            //document.getElementById("ding2").play();
-            /*function sleep (time) {
-                return new Promise((resolve) => setTimeout(resolve, time));
-            }
-            //sleep(3).then(() => {
-            function play2() {
-            var audio = new Audio("ding2.mp3");
-            audio.play();
-            setTimeout(play2, 10000);
-            }
-
-            play2();
-            /*while (true) {
-                setTimeout(play2, 3000);
-            }*/
-            
-        </script>
-
-        <!-- <label for="ding2">
-            <input type="checkbox" id="ding2" data="ding2.mp3" name="ding2"> ding2
-        </label> -->
-
-        
-        
-
         <br>
-
-        <ul class="nav nav-tabs", id="tabs">
-            <li class="nav-item">
-              <a id="main-link" class="nav-link active" aria-current="page" href="#" onclick="ontab('main')">Main</a>
-            </li>
-          
-            <!-- <li class="nav-item">
-              <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-            </li> -->
-          </ul>
-
         <br>
 
         <div id="container-div" class="form-check">
             <div id="main-div" >
                 <table id="main-table" class="table-borderless px-2">
+                    <tr>
+                        <td>
+                            <input type="text" id="timeout">
+                            <input type="button" class="btn btn-primary btn-sm" onclick="set_timeout()" value="Set">
+                        </td>
+                    </tr>
                     <tr>
                         <div id="controls">
                             <input type="button" onclick="shutdown()" class="btn btn-primary btn-sm" id="shutdown" value="Shutdown">
@@ -89,12 +49,6 @@
                                     <td id="usedJSHeapSize"></td>
                                 </tr>
                             </table>
-                            <!-- <label>jsHeapSizeLimit: </label>
-                            <p id="jsHeapSizeLimit"></p>
-                            <label>totalJSHeapSize: </label>
-                            <p id="totalJSHeapSize"></p>
-                            <label>usedJSHeapSize: </label>
-                            <p id="usedJSHeapSize"></p> -->
                         </div>
                     </tr>
                     <tr>
@@ -107,32 +61,7 @@
             </div>
         </div>
 
-        <script>
-            list_sounds();
-        </script>
-   
-  
-       
-
         <br>
-        
-        
-        <script>
-        
-        
-        </script>
-
-
-        <!-- <script>
-            sleep(3).then(() => {
-                var sound = new Howl({
-                    src: ['ding2.mp3'],
-                    autoplay: true
-                });
-            });
-        </script> -->
-          
-          
 
     </body>
 </html> 

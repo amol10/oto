@@ -1,7 +1,17 @@
+//require('time.js');
+
+var log_enabled = false;
+
+function log(str) {
+    if (log_enabled) {
+        console.log(str);
+    }
+}
 
 window.sounds_data = JSON.parse(sounds_json);
 console.log(sounds_data);
 //sed replace>
+var settings = window.settings;
 
 var heartbeat = new Howl({
     src: ['sounds/misc/ding2.mp3'],
@@ -235,6 +245,17 @@ function checker() {
             var s = sounds[sound];
             if (document.querySelector("#" + catsnd + ":checked") !== null) {
                 console.log("checked");
+                if (s['start_time'] === null) {
+                    s['start_time'] = new Date();
+                } else {
+                    var td = time_diff(s['start_time'], new Date());
+                    log(`time diff: ${td}`);
+                    if (td >= window.settings.timeout) {
+                        s['start_time'] = null;
+                        jQuery('#' + catsnd).prop('checked', false);
+                    }
+                }
+
                 s["mdelay"] = parseInt(jQuery("#" + catsnd + "-mdelay")[0].value);
                 console.log(sound, sounds[sound]["mdelay"], sounds[sound]["sleep"]);
                 if (isNaN(s["sleep"])) {

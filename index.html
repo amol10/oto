@@ -1,12 +1,12 @@
 <html>
     <head>
-        <script type="text/javscript">
+        <!-- <script type="text/javscript">
             function play() {
             var audio = new Audio("file://ding2.mp3");
             audio.play();
             }
             window.onload = play;
-        </script>
+        </script> -->
         <script src="howler.js"></script>
         <script src="jquery-3.6.0.js"></script>
         <script src="bootstrap.min.js"></script>
@@ -16,11 +16,15 @@
         <script src="time.js"></script>
         <script src="lib.js"></script>
 
-        <script src="settings.json"></script>
-        <script src="settings.js"></script>
+        <!-- <script src="settings.json"></script>
+        <script src="settings.js"></script> -->
+
+        <script>
+            document.onload = window_onload();
+        </script>
 
     </head>
-    <body>
+    <body onload="window_onload()">
         <!-- <Audio id="ding2" src="file://ding2.mp3"></Audio> -->
         <script>    
             //document.getElementById("ding2").play();
@@ -55,59 +59,25 @@
               <a id="main-link" class="nav-link active" aria-current="page" href="#" onclick="ontab('main')">Main</a>
             </li>
           
-            <!-- <li class="nav-item">
-              <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-            </li> -->
+            <li class="nav-item">
+              <a id="settings-link" class="nav-link" href="#" onclick="ontab('settings')">Settings</a>
+            </li>
           </ul>
 
         <br>
 
         <div id="container-div" class="form-check">
             <div id="main-div" >
-                <table id="main-table" class="table-borderless px-2">
-                    <tr>
-                        <div id="controls">
-                            <input type="button" onclick="shutdown()" class="btn btn-primary btn-sm" id="shutdown" value="Shutdown">
-                            <input type="button" onclick="mute()" class="btn btn-primary btn-sm" id="mute" value="Mute">
-                            <input type="button" onclick="chaos()" class="btn btn-primary btn-sm" id="chaos" value="Chaos">
-                            <input type="button" class="btn btn-primary btn-sm" onclick="test()" id="test" value="Test">
-                        </div>
-                    </tr>
-                    <tr>
-                        <div id="performance">
-                            <table>
-                                <tr>
-                                    <td>jsHeapSizeLimit</td>
-                                    <td id="jsHeapSizeLimit"></td>
-                                </tr>
-                                <tr>
-                                    <td>totalJSHeapSize</td>
-                                    <td id="totalJSHeapSize"></td>
-                                </tr>
-                                <tr>
-                                    <td>usedJSHeapSize</td>
-                                    <td id="usedJSHeapSize"></td>
-                                </tr>
-                            </table>
-                            <!-- <label>jsHeapSizeLimit: </label>
-                            <p id="jsHeapSizeLimit"></p>
-                            <label>totalJSHeapSize: </label>
-                            <p id="totalJSHeapSize"></p>
-                            <label>usedJSHeapSize: </label>
-                            <p id="usedJSHeapSize"></p> -->
-                        </div>
-                    </tr>
-                    <tr>
-                        <div id="test">
-                            
-                        </div>
-                    </tr>
-
-                </table>
+                
+            </div>
+            <div id="settings-div" >
+                
             </div>
         </div>
 
         <script>
+            jQuery('#settings-div').load('settings.html #settings-div');
+
             list_sounds();
         </script>
    

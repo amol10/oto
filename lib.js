@@ -12,12 +12,25 @@ window.sounds_data = JSON.parse(sounds_json);
 console.log(sounds_data);
 //sed replace>
 var settings = window.settings;
+window.settings = {
+    'timeout': 10
+};
 
 var heartbeat = new Howl({
     src: ['sounds/misc/ding2.mp3'],
     volume: 0.1
 });
 
+function load_settings_html() {
+    log("loading settings html");
+    jQuery('#settings-div').load('settings.html #settings-div');
+}
+
+function window_onload() {
+    load_settings_html();
+}
+
+window.onload = window_onload();
 
 
 window.muteSounds = false;
@@ -83,7 +96,7 @@ function cat_snd(category, sound) {
 function ontab(category) {
     console.log("ontab", category);
 
-    var tabs = ["main"].concat(Object.keys(sounds_data));
+    var tabs = ["main", "settings"].concat(Object.keys(sounds_data));
     console.log(tabs);
 
     for (var i = 0; i < tabs.length; i++) {
